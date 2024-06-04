@@ -71,9 +71,6 @@ class DatabaseSeeder extends Seeder
 
         TrainingSession::factory(12)->create();
 
-        TrainingSessionTag::factory(10)->create([
-            'training_session_id' => rand(1, 12),
-            'tag_id' => rand(1, 4)
-        ]);
+        TrainingSessionTag::factory(25)->create();
     }
 }

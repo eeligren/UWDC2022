@@ -1,6 +1,13 @@
 @extends('layouts.dashboard')
 @section('main-content')
-    @foreach(auth()->user()->training_sessions as $session)
+    <div class="grid grid-cols-4">
+        <div>
 
-    @endforeach
+        </div>
+        <div class="col-span-3 p-8 pl-0">
+            @include('tables.datatable')
+        </div>
+
+    </div>
+
 @endsection

@@ -17,7 +17,8 @@ class TrainingSessionTagFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'training_session_id' => fake()->numberBetween(1, 12),
+            'tag_id' => fake()->numberBetween(1, 4)
         ];
     }
 }

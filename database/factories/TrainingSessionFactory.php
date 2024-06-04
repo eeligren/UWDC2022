@@ -20,7 +20,7 @@ class TrainingSessionFactory extends Factory
             'type_id' => rand(1, 2),
             'category_id' => rand(1, 4),
             'time_spent' => rand(1, 5),
-            'notes' => fake()->paragraph,
+            'notes' => fake()->sentence(5),
             'user_id' => rand(1, 2)
         ];
     }

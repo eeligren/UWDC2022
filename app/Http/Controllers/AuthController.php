@@ -6,26 +6,23 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function show()
-    {
-        return view('auth.login');
-    }
-
     public function login(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
         if(!$user) {
-            return redirect()->back()->withErrors(['login' => 'Email or password not correct']);
+            return response()->json(['message' => 'Email or password not correct'], 404);
         }
 
-        $credentials = $request->only(['email', 'password']);
-        if(Auth::attempt($credentials)) {
-            return redirect()->route('dashboard.overview');
+        if(Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'token' => $user->createToken(now())->plainTextToken
+            ]);
         } else {
-            return redirect()->back()->withErrors(['login' => 'Email or password not correct']);
+            return response()->json(['message' => 'Email or password not correct'], 500);
         }
     }
 

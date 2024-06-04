@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
         })->name('dashboard.overview');
     });
 
+    Route::post('/training-sessions', [\App\Http\Controllers\TrainingSessionController::class, 'store'])->name('trainingsessions.create');
+
     Route::delete('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 });
 
