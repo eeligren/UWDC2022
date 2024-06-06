@@ -28,7 +28,7 @@ class AuthController extends Controller
 
     function logout(Request $request)
     {
-        \auth()->logout();
-        return redirect()->route('login');
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out']);
     }
 }

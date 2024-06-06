@@ -5,19 +5,37 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getUser();
     }, []);
 
     const getUser = async () => {
+        setLoading(true);
         try {
             const { data } = await api.get('/user');
             setUser(data);
         } catch (e) {
+            localStorage.setItem('token', '');
             setUser(null);
+        }
+        setLoading(false);
+    }
+
+    const logout = async () => {
+        setLoading(true);
+        try {
+            await api.delete('/logout');
+            console.log('logout')
+            localStorage.setItem('token', '');
+            setUser(null);
+            setLoading(false);
+            return true
+        } catch (e) {
             console.log(e)
+            setLoading(false);
+            return false
         }
     }
 
@@ -35,7 +53,7 @@ export const AuthProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{isAuthenticated: !!user, user, loading, getUser, login}}>
+        <AuthContext.Provider value={{isAuthenticated: !!user, user, loading, getUser, login, logout}}>
             {children}
         </AuthContext.Provider>
     )

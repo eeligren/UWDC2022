@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/training-sessions', [\App\Http\Controllers\TrainingSessionController::class, 'index']);
     Route::post('/training-sessions', [\App\Http\Controllers\TrainingSessionController::class, 'store']);
     Route::delete('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+    Route::get('/statistics', [\App\Http\Controllers\StatisticsController::class, 'index']);
+
 });
 
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);

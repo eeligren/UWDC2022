@@ -27,7 +27,7 @@ export default function LoginPage() {
         if(await login(values)) {
             navigate('/dashboard/overview')
         } else {
-            setError('Login failed, please try again.')
+            setError('“Email or password not correct')
         }
     }
 
