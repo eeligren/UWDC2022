@@ -19,6 +19,7 @@ export default function OverviewPage() {
     const [addNew, setAddNew] = useState(true);
     const [sessions, setSessions] = useState([]);
     const { user, logout } = useAuth();
+    const [edit, setEdit] = useState(null);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [cards, setCards] = useState([
@@ -103,7 +104,7 @@ export default function OverviewPage() {
             </header>
             <main className={'p-12'}>
                 <div className={'grid grid-cols-4 gap-12'}>
-                    <AddNewSidebar open={addNew} close={() => setAddNew(false)} callback={() => {  getSessions(); getStatistics(); setMessage('Entry added successfully') }}/>
+                    <AddNewSidebar edit={edit} open={addNew} setEdit={setEdit} close={() => setAddNew(false)} callback={() => {  getSessions(); getStatistics(); setMessage('Entry added successfully') }}/>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="cards">
                             {(provided) => (
@@ -130,7 +131,7 @@ export default function OverviewPage() {
                             )}
                         </Droppable>
                     </DragDropContext>
-                    <div className={'col-span-3'}><TrainingSessionsTable sessions={sessions}/></div>
+                    <div className={'col-span-3'}><TrainingSessionsTable sessions={sessions} edit={(session) => { setEdit(session); setAddNew(true); }}/></div>
                 </div>
             </main>
         </>

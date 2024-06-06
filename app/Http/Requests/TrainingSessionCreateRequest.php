@@ -23,8 +23,10 @@ class TrainingSessionCreateRequest extends FormRequest
     {
         return [
             'date' => 'required',
-            'type_id' => 'required',
-            'category_id' => 'required',
+            'type_id' => 'sometimes',
+            'category_id' => 'sometimes',
+            'new_category' => 'sometimes',
+            'new_type' => 'sometimes',
             'time_spent' => 'required',
             'notes' => 'required',
             'tags' => 'required'
