@@ -13,6 +13,7 @@ class TrainingSession extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
     public function type() : BelongsTo
     {
         return $this->belongsTo(Type::class);

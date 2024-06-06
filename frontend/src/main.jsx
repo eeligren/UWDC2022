@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import DashboardLayout from "./components/dashboard-layout.jsx";
 import LoginPage from "./pages/login.jsx";
 import {AuthProvider} from "./contexts/authContext.jsx";
 import OverviewPage from "./pages/dashboard/overview.jsx";
@@ -17,7 +16,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <ProtectedPage><DashboardLayout></DashboardLayout></ProtectedPage>,
+        element: <ProtectedPage></ProtectedPage>,
         children: [
             {
                 path: '/dashboard/overview',
