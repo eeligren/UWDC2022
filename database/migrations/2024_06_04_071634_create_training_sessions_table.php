@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Type::class)->constrained();
             $table->foreignIdFor(\App\Models\Category::class)->constrained();
             $table->float('time_spent');
-            $table->string('notes');
+            $table->string('notes')->nullable();
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

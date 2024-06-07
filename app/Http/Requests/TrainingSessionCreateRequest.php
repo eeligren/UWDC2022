@@ -28,7 +28,7 @@ class TrainingSessionCreateRequest extends FormRequest
             'new_category' => 'sometimes',
             'new_type' => 'sometimes',
             'time_spent' => 'required',
-            'notes' => 'required',
+            'notes' => 'sometimes',
             'tags' => 'required'
         ];
     }

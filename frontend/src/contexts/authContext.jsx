@@ -3,6 +3,9 @@ import api from "../utils/axios.js";
 
 const AuthContext = createContext(null);
 
+/*
+Auth context, handle authentication app wide
+ */
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -12,6 +15,11 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     const getUser = async () => {
+        if(!localStorage.getItem('token')) {
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
         try {
             const { data } = await api.get('/user');
@@ -24,17 +32,12 @@ export const AuthProvider = ({children}) => {
     }
 
     const logout = async () => {
-        setLoading(true);
         try {
             await api.delete('/logout');
-            console.log('logout')
             localStorage.setItem('token', '');
             setUser(null);
-            setLoading(false);
             return true
         } catch (e) {
-            console.log(e)
-            setLoading(false);
             return false
         }
     }
@@ -47,7 +50,6 @@ export const AuthProvider = ({children}) => {
             getUser();
             return true;
         } catch (e) {
-            console.log(e)
             return false
         }
     }

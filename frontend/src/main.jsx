@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import LoginPage from "./pages/login.jsx";
 import {AuthProvider} from "./contexts/authContext.jsx";
 import OverviewPage from "./pages/dashboard/overview.jsx";
@@ -9,10 +9,17 @@ import ProtectedPage from "./components/protected-page.jsx";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 
+/*
+App router
+ */
 const router = createBrowserRouter([
     {
         path: '/login',
         element: <LoginPage></LoginPage>
+    },
+    {
+        path: '/',
+        element: <Navigate to={'/dashboard/overview'}></Navigate>
     },
     {
         path: '/dashboard',
@@ -23,7 +30,11 @@ const router = createBrowserRouter([
                 element: <OverviewPage></OverviewPage>
             }
         ]
-    }
+    },
+    {
+        path: '/dashboard',
+        element: <Navigate to={'/dashboard/overview'}></Navigate>
+    },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

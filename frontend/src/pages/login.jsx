@@ -23,6 +23,9 @@ export default function LoginPage() {
     });
     const { login } = useAuth();
 
+    /*
+    Login handler
+     */
     const submit = async (values) => {
         if(await login(values)) {
             navigate('/dashboard/overview')

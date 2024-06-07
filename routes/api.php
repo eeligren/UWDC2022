@@ -34,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
             'tags' => $tags
         ]);
     });
+    Route::get('/competitors', [\App\Http\Controllers\ExpertController::class, 'competitors']);
+    Route::put('/training-sessions/{session}', [\App\Http\Controllers\TrainingSessionController::class, 'update']);
 });
 
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);

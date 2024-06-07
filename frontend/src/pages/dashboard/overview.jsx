@@ -13,12 +13,14 @@ import TrainingSessionsTable from "../../components/datatables/training-sessions
 import AddNewSidebar from "../../components/add-new-sidebar.jsx";
 import {Plus} from "lucide-react";
 import Alert from "../../components/alert.jsx";
+import ExpertView from "./expert.jsx";
 
 export default function OverviewPage() {
     const [statistics, setStatistics] = useState({});
-    const [addNew, setAddNew] = useState(true);
+    const [addNew, setAddNew] = useState(false);
     const [sessions, setSessions] = useState([]);
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
     const [edit, setEdit] = useState(null);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -41,10 +43,8 @@ export default function OverviewPage() {
         setIsLoading(true)
         try {
             const { data } = await api.get('/statistics');
-            console.log(data);
             setStatistics(data);
         } catch (e) {
-            console.log(e);
             alert("Couldn't fetch statistics.")
         }
         setIsLoading(false)
@@ -54,10 +54,8 @@ export default function OverviewPage() {
         setIsLoading(true)
         try {
             const { data } = await api.get('/training-sessions');
-            console.log(data);
             setSessions(data);
         } catch (e) {
-            console.log(e);
             alert("Couldn't fetch sessions.")
         }
         setIsLoading(false)
@@ -76,6 +74,11 @@ export default function OverviewPage() {
         localStorage.setItem('cardOrder', JSON.stringify(reorderedCards));
     };
 
+    const _logout = () => {
+        navigate('/login');
+        logout();
+    }
+
     if(isLoading) {
         return (<p>Loading...</p>)
     }
@@ -85,54 +88,62 @@ export default function OverviewPage() {
             <Alert message={message} setMessage={setMessage} />
             <header className="p-4 bg-slate-700 flex items-center justify-between">
                 <div>
-                    <button
-                        className="py-2 px-4 border rounded-md uppercase font-semibold text-sm flex items-center gap-2"
-                        onClick={() => setAddNew(true)}><Plus/> ADD NEW
-                    </button>
+                    {user && user?.is_expert !== 1 && (
+                        <button
+                            className="py-2 px-4 border rounded-md uppercase font-semibold text-sm flex items-center gap-2"
+                            onClick={() => setAddNew(true)}><Plus/> ADD NEW
+                        </button>
+                    )}
                 </div>
 
                 <div className="flex items-center gap-4">
                     <div>
                         <p className="font-semibold">{user?.name}</p>
-                        <p className="text-sm">competitor</p>
+                        <p className="text-sm">{user && user?.is_expert === 1 ? 'expert' :'competitor'}</p>
                     </div>
                     <button className="py-2 px-4 border rounded-md uppercase font-semibold text-sm"
-                            onClick={logout}>Sign
+                            onClick={_logout}>Sign
                         Out
                     </button>
                 </div>
             </header>
             <main className={'p-12'}>
-                <div className={'grid grid-cols-4 gap-12'}>
-                    <AddNewSidebar edit={edit} open={addNew} setEdit={setEdit} close={() => setAddNew(false)} callback={() => {  getSessions(); getStatistics(); setMessage('Entry added successfully') }}/>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="cards">
-                            {(provided) => (
-                                <div className={'space-y-4'} {...provided.droppableProps} ref={provided.innerRef}>
-                                    {cards.map((card, index) => (
-                                        <Draggable key={card.id} draggableId={card.id} index={index}>
-                                            {(provided) => (
-                                                <div
-                                                    ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                    <Card>
-                                                        {card.content === 'WorkingHoursCard' &&
-                                                            <WorkingHoursCard statistics={statistics}/>}
-                                                        {card.content === 'Last12Months' &&
-                                                            <Last12Months last_12_months={statistics?.last_12_months}/>}
-                                                        {card.content === 'UsedTechnologiesCard' &&
-                                                            <UsedTechnologiesCard statistics={statistics}/>}
-                                                    </Card>
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    ))}
-                                    {provided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
-                    <div className={'col-span-3'}><TrainingSessionsTable sessions={sessions} edit={(session) => { setEdit(session); setAddNew(true); }}/></div>
-                </div>
+                {user && user?.is_expert !== 1 ? (<>
+                    <div className={'grid grid-cols-4 gap-12'}>
+                        <AddNewSidebar edit={edit} open={addNew} setEdit={setEdit} close={() => setAddNew(false)} callback={() => {  getSessions(); getStatistics(); setEdit(null); setMessage(edit ? 'Entry edited successfully' : 'Entry added successfully') }}/>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId="cards">
+                                {(provided) => (
+                                    <div className={'space-y-4'} {...provided.droppableProps} ref={provided.innerRef}>
+                                        {cards.map((card, index) => (
+                                            <Draggable key={card.id} draggableId={card.id} index={index}>
+                                                {(provided) => (
+                                                    <div
+                                                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                        <Card>
+                                                            {card.content === 'WorkingHoursCard' &&
+                                                                <WorkingHoursCard statistics={statistics}/>}
+                                                            {card.content === 'Last12Months' &&
+                                                                <Last12Months last_12_months={statistics?.last_12_months}/>}
+                                                            {card.content === 'UsedTechnologiesCard' &&
+                                                                <UsedTechnologiesCard statistics={statistics}/>}
+                                                        </Card>
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                        <div className={'col-span-3'}><TrainingSessionsTable sessions={sessions} edit={(session) => { setEdit(session); setAddNew(true); }}/></div>
+                    </div>
+                </>) : (<>
+                    <div className={''}>
+                        <ExpertView/>
+                    </div>
+                </>)}
             </main>
         </>
     )

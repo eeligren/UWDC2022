@@ -29,6 +29,13 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('demopass2')
         ]);
 
+        \App\Models\User::factory()->create([
+            'name' => 'expert1',
+            'email' => 'expert1@skill17.com',
+            'is_expert' => true,
+            'password' => bcrypt('demopass1')
+        ]);
+
         Type::factory()->create([
             'name' => 'Competition'
         ]);

@@ -1,6 +1,9 @@
 import {Check, X} from 'lucide-react';
 import {useEffect} from "react";
 
+/*
+Alert message, dissapears automaticly after 5 seconds or X button press
+ */
 export default function Alert({message, setMessage}) {
 
     useEffect(() => {

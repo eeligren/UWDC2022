@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /*
+     * Login
+     */
     public function login(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -26,6 +29,9 @@ class AuthController extends Controller
         }
     }
 
+    /*
+     * Logout, destroys user token
+     */
     function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

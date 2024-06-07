@@ -48,7 +48,7 @@ export default function Last12Months({last_12_months}) {
     };
 
     return (
-        <div className={'bg-slate-700 p-4 rounded'}>
+        <div className={'bg-slate-700 p-4'}>
             <p className={'mb-4'}>12 months overview</p>
             <Bar options={options} data={_data} />
         </div>

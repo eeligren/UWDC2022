@@ -1,5 +1,8 @@
 import axios from "axios";
 
+/*
+Create axios instance and add auth header
+ */
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL
 });

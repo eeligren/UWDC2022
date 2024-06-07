@@ -9,6 +9,9 @@ use Illuminate\Support\Str;
 
 class StatisticsController extends Controller
 {
+    /*
+     * Get competitor statistics
+     */
     public function index()
     {
         $trainingSessions = auth()->user()->training_sessions;

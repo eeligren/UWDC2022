@@ -23,7 +23,7 @@ createTheme('solarized', {
     },
 }, 'dark');
 
-export default function TrainingSessionsTable({sessions, edit}) {
+export default function TrainingSessionsTable({sessions, edit, disableEdit}) {
     const columns = [
         {
             name: 'DATE',
@@ -68,10 +68,15 @@ export default function TrainingSessionsTable({sessions, edit}) {
             )
         },
         {
-            name: 'ACTIONS',
             selector: row => (
-                <button className={'px-4'} onClick={() => edit(row)}><Pencil className={'w-5 h-5'}/></button>
-            )
+                <>
+                    {!disableEdit && (
+                        <button className={'px-4'} onClick={() => edit(row)}><Pencil className={'w-5 h-5'}/></button>
+
+                    )}
+                </>
+            ),
+            right: 'true'
         }
     ];
 
