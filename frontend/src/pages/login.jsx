@@ -30,7 +30,7 @@ export default function LoginPage() {
         if(await login(values)) {
             navigate('/dashboard/overview')
         } else {
-            setError('“Email or password not correct')
+            setError('Email or password not correct')
         }
     }
 
